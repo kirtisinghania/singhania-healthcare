@@ -1,0 +1,1632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Singhania Healthcare - Women's Health & Gynecology Clinic | Dr. Pooja Agrawal</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Singhania Healthcare - Leading women's health clinic specializing in gynecology, ultrasound, pregnancy care, and comprehensive women's healthcare services. Expert care by Dr. Pooja Agrawal.">
+    <meta name="keywords" content="Singhania Healthcare, women's health clinic, gynecology, ultrasound, pregnancy care, Dr. Pooja Agrawal, women's healthcare, gynecologist, maternity care">
+    <meta name="author" content="Singhania Healthcare">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.singhaniahealthcare.in/">
+    <meta property="og:title" content="Singhania Healthcare - Women's Health & Gynecology Clinic">
+    <meta property="og:description" content="Expert women's healthcare services including gynecology, ultrasound, and comprehensive maternity care.">
+    <meta property="og:image" content="https://www.singhaniahealthcare.in/og-image.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://www.singhaniahealthcare.in/">
+    <meta property="twitter:title" content="Singhania Healthcare - Women's Health Clinic">
+    <meta property="twitter:description" content="Expert women's healthcare services including gynecology, ultrasound, and comprehensive maternity care.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --primary: #0EA5E9;
+            --primary-dark: #0369A1;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+            --surface: #FFFFFF;
+            --bg: #F8FAFC;
+            --text: #0F172A;
+            --text-secondary: #64748B;
+            --border: #E2E8F0;
+        }
+        
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); }
+        
+        .auth-screen { min-height: 100vh; display: flex; align-items: center; justify-content: center; 
+            background: linear-gradient(135deg, #0C4A6E 0%, #0369A1 100%); padding: 2rem; }
+        
+        .auth-box { background: white; padding: 3rem; border-radius: 20px; max-width: 450px; width: 100%; 
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+        
+        .auth-title { font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem; text-align: center; }
+        .auth-subtitle { color: var(--text-secondary); text-align: center; margin-bottom: 2rem; }
+        
+        .user-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem; }
+        .user-tab { padding: 1rem; border: 2px solid var(--border); border-radius: 12px; text-align: center; 
+            cursor: pointer; transition: all 0.2s; font-weight: 600; }
+        .user-tab:hover { border-color: var(--primary); background: #F0F9FF; }
+        .user-tab.active { border-color: var(--primary); background: var(--primary); color: white; }
+        
+        .form-group { margin-bottom: 1.5rem; }
+        .form-label { display: block; font-weight: 600; margin-bottom: 0.5rem; }
+        .form-input { width: 100%; padding: 0.875rem; border: 2px solid var(--border); border-radius: 10px; 
+            font-size: 1rem; transition: border 0.2s; }
+        .form-input:focus { outline: none; border-color: var(--primary); }
+        
+        .btn { padding: 0.875rem 1.5rem; border: none; border-radius: 10px; font-weight: 600; 
+            cursor: pointer; font-size: 1rem; transition: all 0.2s; }
+        .btn-primary { background: var(--primary); color: white; width: 100%; }
+        .btn-primary:hover { background: var(--primary-dark); }
+        .btn-secondary { background: var(--bg); color: var(--text); }
+        .btn-success { background: var(--success); color: white; }
+        .btn-danger { background: var(--danger); color: white; }
+        
+        .app { display: none; }
+        .app.active { display: flex; min-height: 100vh; }
+        
+        .sidebar { width: 280px; background: white; border-right: 1px solid var(--border); 
+            position: fixed; height: 100vh; overflow-y: auto; }
+        .sidebar-header { padding: 1.5rem; border-bottom: 1px solid var(--border); }
+        .logo { font-size: 1.5rem; font-weight: 800; color: var(--primary); }
+        
+        .nav-item { padding: 0.75rem 1.5rem; display: flex; align-items: center; gap: 0.75rem; 
+            cursor: pointer; transition: all 0.2s; }
+        .nav-item:hover { background: var(--bg); }
+        .nav-item.active { background: var(--primary); color: white; }
+        
+        .main { flex: 1; margin-left: 280px; }
+        .topbar { background: white; padding: 1.25rem 2rem; border-bottom: 1px solid var(--border); 
+            display: flex; justify-content: space-between; align-items: center; }
+        .page-title { font-size: 1.5rem; font-weight: 700; }
+        
+        .content { padding: 2rem; }
+        .card { background: white; border-radius: 16px; padding: 1.5rem; margin-bottom: 1.5rem; 
+            border: 1px solid var(--border); }
+        .card-title { font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem; }
+        
+        .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; 
+            background: rgba(0,0,0,0.5); z-index: 9999; padding: 2rem; overflow-y: auto; }
+        .modal.active { display: flex; align-items: center; justify-content: center; }
+        .modal-content { background: white; border-radius: 20px; max-width: 800px; width: 100%; 
+            max-height: 90vh; overflow-y: auto; }
+        .modal-header { padding: 1.5rem 2rem; border-bottom: 1px solid var(--border); 
+            display: flex; justify-content: space-between; align-items: center; }
+        .modal-title { font-size: 1.5rem; font-weight: 700; }
+        .modal-body { padding: 2rem; }
+        
+        .uhid-badge { background: var(--primary); color: white; padding: 0.5rem 1rem; 
+            border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-weight: 600; }
+        
+        .status-badge { padding: 0.375rem 0.75rem; border-radius: 8px; font-size: 0.875rem; 
+            font-weight: 600; text-transform: uppercase; }
+        .status-free { background: rgba(16, 185, 129, 0.1); color: var(--success); }
+        .status-paid { background: rgba(14, 165, 233, 0.1); color: var(--primary); }
+        
+        .patient-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem; }
+        .patient-card { padding: 2rem; border: 2px solid var(--border); border-radius: 16px; 
+            text-align: center; cursor: pointer; transition: all 0.2s; }
+        .patient-card:hover { border-color: var(--primary); background: #F0F9FF; }
+        .patient-card-icon { font-size: 3rem; margin-bottom: 1rem; }
+        .patient-card-title { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem; }
+        
+        .table { width: 100%; border-collapse: collapse; }
+        .table th { background: var(--bg); padding: 0.875rem; text-align: left; 
+            font-weight: 600; font-size: 0.875rem; color: var(--text-secondary); }
+        .table td { padding: 1rem 0.875rem; border-top: 1px solid var(--border); }
+        .table tr:hover { background: var(--bg); }
+        
+        .empty-state { text-align: center; padding: 4rem 2rem; color: var(--text-secondary); }
+        .empty-icon { font-size: 4rem; margin-bottom: 1rem; opacity: 0.5; }
+        
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
+        .form-row.full { grid-template-columns: 1fr; }
+        
+        .alert { padding: 1rem; border-radius: 10px; margin-bottom: 1rem; }
+        .alert-danger { background: rgba(239, 68, 68, 0.1); color: #991B1B; border: 1px solid var(--danger); }
+        .alert-success { background: rgba(16, 185, 129, 0.1); color: #065F46; border: 1px solid var(--success); }
+        .alert-warning { background: rgba(245, 158, 11, 0.1); color: #92400E; border: 1px solid var(--warning); }
+        
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-100%); }
+            .main { margin-left: 0; }
+            .patient-cards, .form-row { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Auth Screen -->
+    <div class="auth-screen" id="authScreen">
+        <div class="auth-box">
+            <h1 class="auth-title">Singhania Healthcare</h1>
+            <p class="auth-subtitle">Sign in to continue</p>
+            
+            <div class="user-tabs">
+                <div class="user-tab active" onclick="selectTab('staff')">👨‍⚕️ Staff</div>
+                <div class="user-tab" onclick="selectTab('patient')">🧑‍💼 Patient</div>
+            </div>
+            
+            <div id="errorAlert" class="alert alert-danger" style="display:none;"></div>
+            
+            <form onsubmit="handleLogin(event)">
+                <div id="emailField" class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-input" id="emailInput" required>
+                </div>
+                <div id="uhidField" class="form-group" style="display:none;">
+                    <label class="form-label">UHID</label>
+                    <input type="text" class="form-input" id="uhidInput">
+                </div>
+                <div id="codeField" class="form-group">
+                    <label class="form-label">Staff Code</label>
+                    <div style="position: relative;">
+                        <input type="password" class="form-input" id="codeInput" style="padding-right: 3rem;">
+                        <button type="button" onclick="toggleStaffCode()" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.25rem; padding: 0.5rem;">
+                            <span id="codeToggle">👁️</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <div style="position: relative;">
+                        <input type="password" class="form-input" id="passwordInput" required style="padding-right: 3rem;">
+                        <button type="button" onclick="togglePassword()" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.25rem; padding: 0.5rem;">
+                            <span id="passwordToggle">👁️</span>
+                        </button>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Sign In →</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Staff App -->
+    <div class="app" id="staffApp">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">Singhania Healthcare</div>
+                <p style="color: var(--text-secondary); margin-top: 0.5rem; font-size: 0.875rem;" id="userName">Staff Member</p>
+            </div>
+            <nav>
+                <div class="nav-item active" onclick="navigate('dashboard')">🏠 Dashboard</div>
+                <div class="nav-item" onclick="navigate('patient-entry')">👥 Patient Entry</div>
+                <div class="nav-item" onclick="navigate('diagnosis')">🩺 Diagnosis</div>
+                <div class="nav-item" onclick="navigate('patient-history')">📋 Patient History</div>
+                <div class="nav-item" onclick="navigate('ultrasound')">🔬 Ultrasound</div>
+                <div class="nav-item" onclick="navigate('stock')">📦 Stock Management</div>
+                <div class="nav-item" onclick="navigate('reports')">📈 Reports</div>
+                <div class="nav-item" onclick="navigate('logout')">🚪 Logout</div>
+            </nav>
+        </aside>
+
+        <main class="main">
+            <div class="topbar">
+                <h1 class="page-title" id="pageTitle">Dashboard</h1>
+                <button class="btn btn-secondary" onclick="openSettings()">⚙️ Settings</button>
+            </div>
+
+            <div class="content">
+                <!-- Dashboard/Home Page -->
+                <div id="page-dashboard" class="page active">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+                        <!-- Stats Cards -->
+                        <div class="card" style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white;">
+                            <div style="font-size: 0.875rem; opacity: 0.9; margin-bottom: 0.5rem;">Total Patients</div>
+                            <div style="font-size: 2.5rem; font-weight: 800;" id="statTotalPatients">0</div>
+                            <div style="font-size: 0.875rem; opacity: 0.8; margin-top: 0.5rem;">Registered</div>
+                        </div>
+                        
+                        <div class="card" style="background: linear-gradient(135deg, var(--success) 0%, #059669 100%); color: white;">
+                            <div style="font-size: 0.875rem; opacity: 0.9; margin-bottom: 0.5rem;">Today's Visits</div>
+                            <div style="font-size: 2.5rem; font-weight: 800;" id="statTodayVisits">0</div>
+                            <div style="font-size: 0.875rem; opacity: 0.8; margin-top: 0.5rem;">Consultations</div>
+                        </div>
+                        
+                        <div class="card" style="background: linear-gradient(135deg, var(--warning) 0%, #D97706 100%); color: white;">
+                            <div style="font-size: 0.875rem; opacity: 0.9; margin-bottom: 0.5rem;">Stock Alerts</div>
+                            <div style="font-size: 2.5rem; font-weight: 800;" id="statStockAlerts">0</div>
+                            <div style="font-size: 0.875rem; opacity: 0.8; margin-top: 0.5rem;">Items need attention</div>
+                        </div>
+                        
+                        <div class="card" style="background: linear-gradient(135deg, #8B5CF6 0%, #6D28D9 100%); color: white;">
+                            <div style="font-size: 0.875rem; opacity: 0.9; margin-bottom: 0.5rem;">This Month</div>
+                            <div style="font-size: 2.5rem; font-weight: 800;" id="statMonthVisits">0</div>
+                            <div style="font-size: 0.875rem; opacity: 0.8; margin-top: 0.5rem;">Total visits</div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="card">
+                        <h2 class="card-title">Quick Actions</h2>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                            <button class="btn btn-primary" onclick="navigate('patient-entry'); openNewPatient();" style="padding: 1.5rem;">
+                                <div style="font-size: 2rem; margin-bottom: 0.5rem;">➕</div>
+                                <div>New Patient</div>
+                            </button>
+                            <button class="btn btn-secondary" onclick="navigate('patient-entry'); openExistingPatient();" style="padding: 1.5rem;">
+                                <div style="font-size: 2rem; margin-bottom: 0.5rem;">🔍</div>
+                                <div>Find Patient</div>
+                            </button>
+                            <button class="btn btn-secondary" onclick="navigate('diagnosis')" style="padding: 1.5rem;">
+                                <div style="font-size: 2rem; margin-bottom: 0.5rem;">🩺</div>
+                                <div>New Diagnosis</div>
+                            </button>
+                            <button class="btn btn-secondary" onclick="navigate('stock')" style="padding: 1.5rem;">
+                                <div style="font-size: 2rem; margin-bottom: 0.5rem;">📦</div>
+                                <div>Manage Stock</div>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity -->
+                    <div class="card">
+                        <h2 class="card-title">Recent Patients</h2>
+                        <div id="dashboardRecentPatients"></div>
+                    </div>
+
+                    <!-- Upcoming Follow-ups -->
+                    <div class="card">
+                        <h2 class="card-title">Upcoming Follow-ups</h2>
+                        <div id="dashboardFollowups"></div>
+                    </div>
+                </div>
+
+                <!-- Patient Entry -->
+                <div id="page-patient-entry" class="page" style="display:none;">
+                    <div class="patient-cards">
+                        <div class="patient-card" onclick="openNewPatient()">
+                            <div class="patient-card-icon">➕</div>
+                            <div class="patient-card-title">New Patient</div>
+                            <p style="color: var(--text-secondary);">Register with auto UHID</p>
+                        </div>
+                        <div class="patient-card" onclick="openExistingPatient()">
+                            <div class="patient-card-icon">🔍</div>
+                            <div class="patient-card-title">Existing Patient</div>
+                            <p style="color: var(--text-secondary);">Search by UHID</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <h2 class="card-title">Recent Patients</h2>
+                        <div id="recentPatients">
+                            <div class="empty-state">
+                                <div class="empty-icon">📋</div>
+                                <p>No patients yet. Register your first patient!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Diagnosis -->
+                <div id="page-diagnosis" class="page" style="display:none;">
+                    <div class="card">
+                        <h2 class="card-title">Diagnosis & Treatment</h2>
+                        <div class="form-group">
+                            <input type="text" class="form-input" placeholder="Search patient by UHID..." id="diagnosisSearch" onkeyup="searchPatientForDiagnosis()">
+                        </div>
+                        <div id="diagnosisPatientInfo" style="display:none; padding: 1rem; background: var(--bg); border-radius: 10px; margin-bottom: 1.5rem;">
+                            <p><strong>Patient:</strong> <span id="diagPatientName"></span></p>
+                            <p><strong>UHID:</strong> <span class="uhid-badge" id="diagPatientUHID"></span></p>
+                            <p><strong>Age:</strong> <span id="diagPatientAge"></span> | <strong>Contact:</strong> <span id="diagPatientContact"></span></p>
+                        </div>
+                        <div id="diagnosisForm" style="display:none;">
+                            <form onsubmit="saveDiagnosis(event)">
+                                <div class="form-group">
+                                    <label class="form-label">Chief Complaint</label>
+                                    <textarea class="form-input" id="diagComplaint" rows="2" required></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Diagnosis</label>
+                                    <textarea class="form-input" id="diagDiagnosis" rows="2" required></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Treatment/Prescription</label>
+                                    <textarea class="form-input" id="diagTreatment" rows="3" required></textarea>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">Next Follow-up Date</label>
+                                        <input type="date" class="form-input" id="diagFollowup">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Fee Charged</label>
+                                        <input type="number" class="form-input" id="diagFee" placeholder="0">
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Save Diagnosis</button>
+                            </form>
+                        </div>
+                        <div id="diagnosisEmpty" class="empty-state">
+                            <div class="empty-icon">🩺</div>
+                            <p>Search for a patient to begin diagnosis</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="page-patient-history" class="page" style="display:none;">
+                    <div class="card">
+                        <h2 class="card-title">Patient History</h2>
+                        <div class="form-group">
+                            <input type="text" class="form-input" placeholder="Search by UHID..." id="historySearch" onkeyup="searchPatientHistory()">
+                        </div>
+                        <div id="historyResults"></div>
+                        <div id="historyEmpty" class="empty-state">
+                            <div class="empty-icon">📋</div>
+                            <p>Search for a patient to view history</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="page-ultrasound" class="page" style="display:none;">
+                    <div class="card">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                            <h2 class="card-title" style="margin: 0;">Ultrasound Records</h2>
+                            <button class="btn btn-primary" onclick="openModal('newUltrasoundModal')">+ New Ultrasound</button>
+                        </div>
+                        
+                        <!-- Filter Options -->
+                        <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
+                            <select class="form-input" id="ultrasoundFilter" onchange="loadUltrasounds()" style="max-width: 200px;">
+                                <option value="all">All Records</option>
+                                <option value="today">Today</option>
+                                <option value="week">This Week</option>
+                                <option value="month">This Month</option>
+                            </select>
+                            <input type="text" class="form-input" id="ultrasoundSearch" placeholder="Search by UHID or Name..." onkeyup="loadUltrasounds()" style="max-width: 300px;">
+                        </div>
+
+                        <!-- Ultrasound List -->
+                        <div id="ultrasoundList">
+                            <div class="empty-state">
+                                <div class="empty-icon">🔬</div>
+                                <p>No ultrasound records yet</p>
+                            </div>
+                        </div>
+
+                        <!-- Commission Summary -->
+                        <div class="card" style="background: var(--bg); margin-top: 1.5rem;">
+                            <h3 style="font-size: 1.125rem; font-weight: 700; margin-bottom: 1rem;">Commission Summary</h3>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem;">
+                                <div>
+                                    <p style="color: var(--text-secondary); font-size: 0.875rem;">Today</p>
+                                    <p style="font-size: 1.5rem; font-weight: 700; color: var(--success);">₹<span id="commissionToday">0</span></p>
+                                </div>
+                                <div>
+                                    <p style="color: var(--text-secondary); font-size: 0.875rem;">This Week</p>
+                                    <p style="font-size: 1.5rem; font-weight: 700; color: var(--primary);">₹<span id="commissionWeek">0</span></p>
+                                </div>
+                                <div>
+                                    <p style="color: var(--text-secondary); font-size: 0.875rem;">This Month</p>
+                                    <p style="font-size: 1.5rem; font-weight: 700; color: var(--warning);">₹<span id="commissionMonth">0</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="page-stock" class="page" style="display:none;">
+                    <div class="card">
+                        <h2 class="card-title">Stock Management</h2>
+                        <button class="btn btn-primary" onclick="openModal('addStockModal')">+ Add Stock Item</button>
+                        <div style="margin-top: 1.5rem;" id="stockList">
+                            <div class="empty-state">
+                                <div class="empty-icon">📦</div>
+                                <p>No stock items yet</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="page-reports" class="page" style="display:none;">
+                    <div class="card">
+                        <h2 class="card-title">Reports & Analytics</h2>
+                        <div class="empty-state">
+                            <div class="empty-icon">📈</div>
+                            <p>Reports coming soon</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- New Patient Modal -->
+    <div class="modal" id="newPatientModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">New Patient Registration</h2>
+                <button onclick="closeModal('newPatientModal')" style="background:none;border:none;font-size:1.5rem;cursor:pointer;">✕</button>
+            </div>
+            <div class="modal-body">
+                <div style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); 
+                    color: white; padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem;">
+                    <p style="opacity: 0.9; margin-bottom: 0.5rem;">Auto-Generated UHID</p>
+                    <h2 style="font-family: 'JetBrains Mono', monospace; font-size: 2rem;" id="generatedUHID">SHC2024001</h2>
+                </div>
+
+                <form onsubmit="saveNewPatient(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Name *</label>
+                            <input type="text" class="form-input" id="patientName" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Age *</label>
+                            <input type="number" class="form-input" id="patientAge" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Contact *</label>
+                            <input type="tel" class="form-input" id="patientContact" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Patient Type *</label>
+                            <select class="form-input" id="patientType" required>
+                                <option value="">Select</option>
+                                <option value="free">Free</option>
+                                <option value="paid">Paid</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row full">
+                        <div class="form-group">
+                            <label class="form-label">Address</label>
+                            <textarea class="form-input" id="patientAddress" rows="2"></textarea>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+                        <button type="button" class="btn btn-secondary" onclick="closeModal('newPatientModal')">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Register Patient</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Stock Modal -->
+    <div class="modal" id="addStockModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Add Stock Item</h2>
+                <button onclick="closeModal('addStockModal')" style="background:none;border:none;font-size:1.5rem;cursor:pointer;">✕</button>
+            </div>
+            <div class="modal-body">
+                <form onsubmit="saveStock(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Item Name *</label>
+                            <input type="text" class="form-input" id="stockName" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Category *</label>
+                            <select class="form-input" id="stockCategory" required>
+                                <option value="">Select</option>
+                                <option value="medicine">Medicine</option>
+                                <option value="injectable">Injectable</option>
+                                <option value="consumable">Consumable</option>
+                                <option value="syrup">Syrup</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Quantity *</label>
+                            <input type="number" class="form-input" id="stockQuantity" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Unit Price *</label>
+                            <input type="number" class="form-input" id="stockPrice" step="0.01" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Expiry Date</label>
+                            <input type="date" class="form-input" id="stockExpiry">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Low Stock Alert</label>
+                            <input type="number" class="form-input" id="stockAlert" placeholder="e.g., 10">
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+                        <button type="button" class="btn btn-secondary" onclick="closeModal('addStockModal')">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Add Stock</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Existing Patient Search Modal -->
+    <div class="modal" id="existingPatientModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Search Existing Patient</h2>
+                <button onclick="closeModal('existingPatientModal')" style="background:none;border:none;font-size:1.5rem;cursor:pointer;">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Search by UHID or Name</label>
+                    <input type="text" class="form-input" id="existingPatientSearch" placeholder="Enter UHID (e.g., SHC2024001) or patient name" onkeyup="searchExistingPatient()">
+                </div>
+                <div id="existingPatientResults" style="margin-top: 1.5rem;">
+                    <div class="empty-state" style="padding: 2rem;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🔍</div>
+                        <p>Start typing to search patients</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- New Ultrasound Modal -->
+    <div class="modal" id="newUltrasoundModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">New Ultrasound Record</h2>
+                <button onclick="closeModal('newUltrasoundModal')" style="background:none;border:none;font-size:1.5rem;cursor:pointer;">✕</button>
+            </div>
+            <div class="modal-body">
+                <form onsubmit="saveUltrasound(event)">
+                    <!-- Patient Search -->
+                    <div class="form-group">
+                        <label class="form-label">Patient UHID *</label>
+                        <input type="text" class="form-input" id="usPatientUHID" placeholder="Enter UHID" onkeyup="searchPatientForUS()" required>
+                    </div>
+                    
+                    <div id="usPatientInfo" style="display:none; padding: 1rem; background: var(--bg); border-radius: 10px; margin-bottom: 1.5rem;">
+                        <p><strong>Name:</strong> <span id="usPatientName"></span></p>
+                        <p><strong>Age:</strong> <span id="usPatientAge"></span> | <strong>Contact:</strong> <span id="usPatientContact"></span></p>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Ultrasound Type *</label>
+                            <select class="form-input" id="usType" required>
+                                <option value="">Select Type</option>
+                                <option value="pregnancy">Pregnancy Scan</option>
+                                <option value="pelvic">Pelvic Scan</option>
+                                <option value="abdominal">Abdominal Scan</option>
+                                <option value="breast">Breast Scan</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Date *</label>
+                            <input type="date" class="form-input" id="usDate" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Fee Charged (₹) *</label>
+                            <input type="number" class="form-input" id="usFee" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Commission (₹)</label>
+                            <input type="number" class="form-input" id="usCommission" step="0.01" placeholder="0.00">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Findings/Notes</label>
+                        <textarea class="form-input" id="usFindings" rows="3" placeholder="Enter ultrasound findings..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Report Sent via WhatsApp?</label>
+                        <div style="display: flex; gap: 1rem;">
+                            <label style="display: flex; align-items: center; gap: 0.5rem;">
+                                <input type="radio" name="whatsapp" value="yes" id="usWhatsappYes">
+                                <span>Yes</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 0.5rem;">
+                                <input type="radio" name="whatsapp" value="no" id="usWhatsappNo" checked>
+                                <span>No</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 2rem;">
+                        <button type="button" class="btn btn-secondary" onclick="closeModal('newUltrasoundModal')">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save Record</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Firebase Config
+        const firebaseConfig = {
+            apiKey: "AIzaSyDdgGpWrYMAHF1dZU6fpbbz7wHQTn37alY",
+            authDomain: "singhania-healthcare.firebaseapp.com",
+            databaseURL: "https://singhania-healthcare-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "singhania-healthcare",
+            storageBucket: "singhania-healthcare.firebasestorage.app",
+            messagingSenderId: "49451718894",
+            appId: "1:49451718894:web:a0117dc43c31f10b96fbff"
+        };
+
+        // Initialize Firebase
+        let firebaseInitialized = false;
+        let db = null;
+        let auth = null;
+
+        try {
+            firebase.initializeApp(firebaseConfig);
+            auth = firebase.auth();
+            db = firebase.database();
+            firebaseInitialized = true;
+            console.log('Firebase initialized successfully');
+        } catch (error) {
+            console.error('Firebase init error:', error);
+            // Continue without database - auth might still work
+            firebaseInitialized = false;
+        }
+
+        const STAFF_CODE = 'SINGHANIA2024';
+        const DOCTOR_EMAIL = 'dr.poojaagrawal@singhaniahealthcare.com';
+        let currentUser = null;
+        let userType = 'staff';
+        let uhidCounter = 1;
+
+        // Toggle password visibility
+        function togglePassword() {
+            const input = document.getElementById('passwordInput');
+            const toggle = document.getElementById('passwordToggle');
+            if (input.type === 'password') {
+                input.type = 'text';
+                toggle.textContent = '🙈';
+            } else {
+                input.type = 'password';
+                toggle.textContent = '👁️';
+            }
+        }
+
+        function toggleStaffCode() {
+            const input = document.getElementById('codeInput');
+            const toggle = document.getElementById('codeToggle');
+            if (input.type === 'password') {
+                input.type = 'text';
+                toggle.textContent = '🙈';
+            } else {
+                input.type = 'password';
+                toggle.textContent = '👁️';
+            }
+        }
+
+        // Auth Functions
+        function selectTab(type) {
+            userType = type;
+            document.querySelectorAll('.user-tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            if (type === 'patient') {
+                document.getElementById('emailField').style.display = 'none';
+                document.getElementById('uhidField').style.display = 'block';
+                document.getElementById('codeField').style.display = 'none';
+            } else {
+                document.getElementById('emailField').style.display = 'block';
+                document.getElementById('uhidField').style.display = 'none';
+                document.getElementById('codeField').style.display = 'block';
+            }
+        }
+
+        async function handleLogin(e) {
+            e.preventDefault();
+            console.log('Login attempt started');
+            
+            const email = document.getElementById('emailInput').value;
+            const code = document.getElementById('codeInput').value;
+            const password = document.getElementById('passwordInput').value;
+
+            try {
+                if (userType === 'staff') {
+                    if (code !== STAFF_CODE) {
+                        alert('Invalid staff code! Use: SINGHANIA2024');
+                        return;
+                    }
+
+                    if (!auth) {
+                        alert('Firebase Authentication not configured. Please follow setup instructions.');
+                        return;
+                    }
+
+                    try {
+                        await auth.createUserWithEmailAndPassword(email, password);
+                        console.log('New user created');
+                    } catch (err) {
+                        if (err.code === 'auth/email-already-in-use') {
+                            await auth.signInWithEmailAndPassword(email, password);
+                            console.log('Signed in successfully');
+                        } else {
+                            throw err;
+                        }
+                    }
+
+                    currentUser = auth.currentUser;
+                    const isDoctor = email.toLowerCase() === DOCTOR_EMAIL;
+                    document.getElementById('userName').textContent = isDoctor ? 'Dr. Pooja Agrawal' : 'Staff Member';
+
+                    // Try to save to database if available
+                    if (db && firebaseInitialized) {
+                        try {
+                            await db.ref('users/' + currentUser.uid).set({
+                                email, 
+                                role: isDoctor ? 'Doctor' : 'Staff',
+                                lastLogin: firebase.database.ServerValue.TIMESTAMP
+                            });
+                        } catch (dbErr) {
+                            console.log('Database not available:', dbErr.message);
+                            // Continue anyway
+                        }
+                    }
+
+                    document.getElementById('authScreen').style.display = 'none';
+                    document.getElementById('staffApp').classList.add('active');
+                    console.log('Login complete!');
+                    
+                    loadDashboard();
+                    loadPatients();
+                }
+            } catch (err) {
+                console.error('Login error:', err);
+                
+                // User-friendly error messages
+                if (err.code === 'auth/configuration-not-found') {
+                    alert('⚠️ Setup Required!\n\n' +
+                          'Firebase Authentication is not enabled yet.\n\n' +
+                          'Please:\n' +
+                          '1. Go to Firebase Console\n' +
+                          '2. Click "Authentication"\n' +
+                          '3. Click "Get Started"\n' +
+                          '4. Enable "Email/Password"\n' +
+                          '5. Click "Save"\n\n' +
+                          'Then try logging in again!');
+                } else if (err.code === 'auth/weak-password') {
+                    alert('Password should be at least 6 characters');
+                } else if (err.code === 'auth/invalid-email') {
+                    alert('Please enter a valid email address');
+                } else if (err.code === 'auth/wrong-password') {
+                    alert('Incorrect password');
+                } else {
+                    alert('Login error: ' + err.message);
+                }
+            }
+        }
+
+        function showError(msg) {
+            // Hide all Firebase technical errors
+            const lower = msg.toLowerCase();
+            if (lower.includes('firebase') || lower.includes('auth/') || 
+                lower.includes('config') || lower.includes('database')) {
+                console.log('Technical error (hidden):', msg);
+                return;
+            }
+            
+            const el = document.getElementById('errorAlert');
+            el.textContent = msg;
+            el.style.display = 'block';
+            setTimeout(() => el.style.display = 'none', 5000);
+        }
+
+        function logout() {
+            auth.signOut();
+            document.getElementById('staffApp').classList.remove('active');
+            document.getElementById('authScreen').style.display = 'flex';
+        }
+
+        // Navigation
+        function navigate(page) {
+            if (page === 'logout') {
+                logout();
+                return;
+            }
+
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
+            document.getElementById('page-' + page).style.display = 'block';
+            
+            const titles = {
+                'dashboard': 'Dashboard',
+                'patient-entry': 'Patient Entry',
+                'diagnosis': 'Diagnosis',
+                'patient-history': 'Patient History',
+                'ultrasound': 'Ultrasound',
+                'stock': 'Stock Management',
+                'reports': 'Reports'
+            };
+            document.getElementById('pageTitle').textContent = titles[page];
+            
+            // Load data when navigating to specific pages
+            if (page === 'stock') {
+                loadStock();
+            } else if (page === 'dashboard') {
+                loadDashboard();
+            } else if (page === 'ultrasound') {
+                loadUltrasounds();
+            }
+        }
+
+        // Modal Functions
+        function openModal(id) {
+            document.getElementById(id).classList.add('active');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('active');
+        }
+
+        function openNewPatient() {
+            db.ref('patients').once('value', snap => {
+                uhidCounter = snap.numChildren() + 1;
+                document.getElementById('generatedUHID').textContent = `SHC2024${String(uhidCounter).padStart(3, '0')}`;
+            });
+            openModal('newPatientModal');
+        }
+
+        function openExistingPatient() {
+            openModal('existingPatientModal');
+            document.getElementById('existingPatientSearch').value = '';
+            document.getElementById('existingPatientResults').innerHTML = `
+                <div class="empty-state" style="padding: 2rem;">
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">🔍</div>
+                    <p>Start typing to search patients</p>
+                </div>
+            `;
+        }
+
+        function searchExistingPatient() {
+            const searchTerm = document.getElementById('existingPatientSearch').value.trim().toUpperCase();
+            
+            if (searchTerm.length < 2) {
+                document.getElementById('existingPatientResults').innerHTML = `
+                    <div class="empty-state" style="padding: 2rem;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🔍</div>
+                        <p>Type at least 2 characters to search</p>
+                    </div>
+                `;
+                return;
+            }
+
+            db.ref('patients').once('value', snap => {
+                const results = [];
+                
+                snap.forEach(child => {
+                    const patient = child.val();
+                    const nameMatch = patient.name.toUpperCase().includes(searchTerm);
+                    const uhidMatch = patient.uhid.toUpperCase().includes(searchTerm);
+                    
+                    if (nameMatch || uhidMatch) {
+                        results.push(patient);
+                    }
+                });
+
+                if (results.length === 0) {
+                    document.getElementById('existingPatientResults').innerHTML = `
+                        <div class="alert alert-warning">
+                            No patients found matching "${searchTerm}"
+                        </div>
+                    `;
+                    return;
+                }
+
+                let html = '<div style="max-height: 400px; overflow-y: auto;">';
+                results.forEach(patient => {
+                    html += `
+                        <div class="card" style="margin-bottom: 1rem; cursor: pointer; transition: all 0.2s;" 
+                             onclick="selectExistingPatient('${patient.uhid}')"
+                             onmouseover="this.style.background='var(--bg)'" 
+                             onmouseout="this.style.background='white'">
+                            <div style="display: flex; justify-content: space-between; align-items: start;">
+                                <div>
+                                    <h3 style="font-size: 1.125rem; font-weight: 700; margin-bottom: 0.5rem;">${patient.name}</h3>
+                                    <p style="margin-bottom: 0.25rem;"><span class="uhid-badge">${patient.uhid}</span></p>
+                                    <p style="color: var(--text-secondary); font-size: 0.875rem;">
+                                        Age: ${patient.age} | ${patient.contact} | 
+                                        <span class="status-badge status-${patient.type}">${patient.type}</span>
+                                    </p>
+                                </div>
+                                <div style="color: var(--primary); font-size: 1.5rem;">→</div>
+                            </div>
+                        </div>
+                    `;
+                });
+                html += '</div>';
+                
+                document.getElementById('existingPatientResults').innerHTML = html;
+            });
+        }
+
+        function selectExistingPatient(uhid) {
+            closeModal('existingPatientModal');
+            
+            db.ref('patients').orderByChild('uhid').equalTo(uhid).once('value', snap => {
+                let patient = null;
+                snap.forEach(child => { patient = child.val(); });
+                
+                if (patient) {
+                    // Show patient details with options
+                    const actions = `
+                        <div class="card" style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white;">
+                            <h2 style="margin-bottom: 1rem;">Patient Selected</h2>
+                            <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 10px; margin-bottom: 1rem;">
+                                <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem;">${patient.name}</h3>
+                                <p style="opacity: 0.9;"><strong>UHID:</strong> ${patient.uhid}</p>
+                                <p style="opacity: 0.9;"><strong>Age:</strong> ${patient.age} | <strong>Contact:</strong> ${patient.contact}</p>
+                                <p style="opacity: 0.9;"><strong>Type:</strong> ${patient.type.toUpperCase()}</p>
+                            </div>
+                            <p style="margin-bottom: 1rem; opacity: 0.9;">What would you like to do?</p>
+                            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                                <button class="btn" style="background: white; color: var(--primary);" onclick="goToDiagnosis('${patient.uhid}')">
+                                    🩺 New Diagnosis
+                                </button>
+                                <button class="btn" style="background: white; color: var(--primary);" onclick="goToHistory('${patient.uhid}')">
+                                    📋 View History
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    
+                    const resultsDiv = document.getElementById('recentPatients');
+                    resultsDiv.innerHTML = actions + resultsDiv.innerHTML;
+                    
+                    // Scroll to top
+                    window.scrollTo(0, 0);
+                }
+            });
+        }
+
+        function goToDiagnosis(uhid) {
+            // Navigate to diagnosis page
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+            document.querySelectorAll('.nav-item')[1].classList.add('active'); // Diagnosis is 2nd item
+            
+            document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
+            document.getElementById('page-diagnosis').style.display = 'block';
+            document.getElementById('pageTitle').textContent = 'Diagnosis';
+            
+            // Set search and trigger
+            document.getElementById('diagnosisSearch').value = uhid;
+            searchPatientForDiagnosis();
+        }
+
+        function goToHistory(uhid) {
+            // Navigate to history page
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+            document.querySelectorAll('.nav-item')[2].classList.add('active'); // History is 3rd item
+            
+            document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
+            document.getElementById('page-patient-history').style.display = 'block';
+            document.getElementById('pageTitle').textContent = 'Patient History';
+            
+            // Set search and trigger
+            document.getElementById('historySearch').value = uhid;
+            searchPatientHistory();
+        }
+
+        async function saveNewPatient(e) {
+            e.preventDefault();
+            const uhid = document.getElementById('generatedUHID').textContent;
+            const name = document.getElementById('patientName').value;
+            const age = document.getElementById('patientAge').value;
+            const contact = document.getElementById('patientContact').value;
+            const type = document.getElementById('patientType').value;
+            const address = document.getElementById('patientAddress').value;
+
+            try {
+                await db.ref('patients/' + uhid).set({
+                    uhid, name, age, contact, type, address,
+                    createdAt: firebase.database.ServerValue.TIMESTAMP,
+                    createdBy: currentUser.uid
+                });
+
+                alert('Patient registered successfully!\nUHID: ' + uhid);
+                closeModal('newPatientModal');
+                e.target.reset();
+                loadPatients();
+            } catch (err) {
+                alert('Error: ' + err.message);
+            }
+        }
+
+        function loadPatients() {
+            db.ref('patients').limitToLast(5).once('value', snap => {
+                const patients = [];
+                snap.forEach(child => patients.unshift(child.val()));
+                
+                if (patients.length === 0) {
+                    document.getElementById('recentPatients').innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-icon">📋</div>
+                            <p>No patients yet. Register your first patient!</p>
+                        </div>
+                    `;
+                } else {
+                    document.getElementById('recentPatients').innerHTML = `
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>UHID</th>
+                                    <th>Name</th>
+                                    <th>Age</th>
+                                    <th>Type</th>
+                                    <th>Contact</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${patients.map(p => `
+                                    <tr>
+                                        <td><span class="uhid-badge">${p.uhid}</span></td>
+                                        <td>${p.name}</td>
+                                        <td>${p.age}</td>
+                                        <td><span class="status-badge status-${p.type}">${p.type}</span></td>
+                                        <td>${p.contact}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    `;
+                }
+            });
+        }
+
+        function openSettings() {
+            alert('Settings - Coming soon!');
+        }
+
+        // DIAGNOSIS FUNCTIONS
+        let selectedPatientForDiagnosis = null;
+
+        function searchPatientForDiagnosis() {
+            const search = document.getElementById('diagnosisSearch').value.toUpperCase();
+            if (search.length < 3) {
+                document.getElementById('diagnosisPatientInfo').style.display = 'none';
+                document.getElementById('diagnosisForm').style.display = 'none';
+                document.getElementById('diagnosisEmpty').style.display = 'block';
+                return;
+            }
+
+            db.ref('patients').orderByChild('uhid').equalTo(search).once('value', snap => {
+                if (snap.exists()) {
+                    snap.forEach(child => {
+                        const patient = child.val();
+                        selectedPatientForDiagnosis = patient;
+                        document.getElementById('diagPatientName').textContent = patient.name;
+                        document.getElementById('diagPatientUHID').textContent = patient.uhid;
+                        document.getElementById('diagPatientAge').textContent = patient.age;
+                        document.getElementById('diagPatientContact').textContent = patient.contact;
+                        document.getElementById('diagnosisPatientInfo').style.display = 'block';
+                        document.getElementById('diagnosisForm').style.display = 'block';
+                        document.getElementById('diagnosisEmpty').style.display = 'none';
+                    });
+                } else {
+                    alert('Patient not found with UHID: ' + search);
+                }
+            });
+        }
+
+        async function saveDiagnosis(e) {
+            e.preventDefault();
+            if (!selectedPatientForDiagnosis) return;
+
+            const diagnosisData = {
+                uhid: selectedPatientForDiagnosis.uhid,
+                patientName: selectedPatientForDiagnosis.name,
+                complaint: document.getElementById('diagComplaint').value,
+                diagnosis: document.getElementById('diagDiagnosis').value,
+                treatment: document.getElementById('diagTreatment').value,
+                followup: document.getElementById('diagFollowup').value,
+                fee: document.getElementById('diagFee').value,
+                date: new Date().toISOString(),
+                doctor: currentUser.uid
+            };
+
+            try {
+                await db.ref('diagnoses').push(diagnosisData);
+                alert('Diagnosis saved successfully!');
+                e.target.reset();
+                document.getElementById('diagnosisSearch').value = '';
+                document.getElementById('diagnosisPatientInfo').style.display = 'none';
+                document.getElementById('diagnosisForm').style.display = 'none';
+                document.getElementById('diagnosisEmpty').style.display = 'block';
+            } catch (err) {
+                alert('Error saving diagnosis: ' + err.message);
+            }
+        }
+
+        // PATIENT HISTORY FUNCTIONS
+        function searchPatientHistory() {
+            const search = document.getElementById('historySearch').value.toUpperCase();
+            if (search.length < 3) {
+                document.getElementById('historyResults').innerHTML = '';
+                document.getElementById('historyEmpty').style.display = 'block';
+                return;
+            }
+
+            db.ref('patients').orderByChild('uhid').equalTo(search).once('value', patientSnap => {
+                if (!patientSnap.exists()) {
+                    document.getElementById('historyResults').innerHTML = '<div class="alert alert-warning">Patient not found</div>';
+                    document.getElementById('historyEmpty').style.display = 'none';
+                    return;
+                }
+
+                let patient = null;
+                patientSnap.forEach(child => { patient = child.val(); });
+
+                db.ref('diagnoses').orderByChild('uhid').equalTo(search).once('value', diagSnap => {
+                    const visits = [];
+                    diagSnap.forEach(child => visits.unshift(child.val()));
+
+                    let html = `
+                        <div style="background: var(--bg); padding: 1rem; border-radius: 10px; margin-bottom: 1rem;">
+                            <h3 style="font-size: 1.125rem; font-weight: 700; margin-bottom: 0.5rem;">${patient.name}</h3>
+                            <p><span class="uhid-badge">${patient.uhid}</span> | Age: ${patient.age} | ${patient.contact}</p>
+                            <p>Type: <span class="status-badge status-${patient.type}">${patient.type}</span></p>
+                        </div>
+                        <h3 style="font-size: 1.125rem; font-weight: 700; margin: 1.5rem 0 1rem;">Visit History (${visits.length})</h3>
+                    `;
+
+                    if (visits.length === 0) {
+                        html += '<p style="color: var(--text-secondary);">No visits recorded yet</p>';
+                    } else {
+                        visits.forEach(visit => {
+                            const date = new Date(visit.date).toLocaleDateString();
+                            html += `
+                                <div class="card" style="margin-bottom: 1rem;">
+                                    <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.5rem;">${date}</p>
+                                    <p><strong>Complaint:</strong> ${visit.complaint}</p>
+                                    <p><strong>Diagnosis:</strong> ${visit.diagnosis}</p>
+                                    <p><strong>Treatment:</strong> ${visit.treatment}</p>
+                                    ${visit.followup ? `<p><strong>Follow-up:</strong> ${new Date(visit.followup).toLocaleDateString()}</p>` : ''}
+                                    ${visit.fee ? `<p><strong>Fee:</strong> ₹${visit.fee}</p>` : ''}
+                                </div>
+                            `;
+                        });
+                    }
+
+                    document.getElementById('historyResults').innerHTML = html;
+                    document.getElementById('historyEmpty').style.display = 'none';
+                });
+            });
+        }
+
+        // STOCK MANAGEMENT FUNCTIONS
+        async function saveStock(e) {
+            e.preventDefault();
+            const stockData = {
+                name: document.getElementById('stockName').value,
+                category: document.getElementById('stockCategory').value,
+                quantity: parseInt(document.getElementById('stockQuantity').value),
+                price: parseFloat(document.getElementById('stockPrice').value),
+                expiry: document.getElementById('stockExpiry').value,
+                lowStockAlert: parseInt(document.getElementById('stockAlert').value) || 10,
+                addedAt: firebase.database.ServerValue.TIMESTAMP,
+                addedBy: currentUser.uid
+            };
+
+            try {
+                await db.ref('stock').push(stockData);
+                alert('Stock item added successfully!');
+                closeModal('addStockModal');
+                e.target.reset();
+                loadStock();
+            } catch (err) {
+                alert('Error adding stock: ' + err.message);
+            }
+        }
+
+        function loadStock() {
+            db.ref('stock').once('value', snap => {
+                if (!snap.exists()) {
+                    document.getElementById('stockList').innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-icon">📦</div>
+                            <p>No stock items yet</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const items = [];
+                snap.forEach(child => {
+                    items.push({ id: child.key, ...child.val() });
+                });
+
+                const today = new Date();
+                let html = '<table class="table"><thead><tr><th>Item</th><th>Category</th><th>Quantity</th><th>Price</th><th>Expiry</th><th>Status</th></tr></thead><tbody>';
+                
+                items.forEach(item => {
+                    let status = '✅ Good';
+                    let statusColor = 'var(--success)';
+                    
+                    if (item.quantity <= item.lowStockAlert) {
+                        status = '⚠️ Low Stock';
+                        statusColor = 'var(--warning)';
+                    }
+                    
+                    if (item.expiry) {
+                        const expiryDate = new Date(item.expiry);
+                        const daysUntilExpiry = Math.ceil((expiryDate - today) / (1000 * 60 * 60 * 24));
+                        if (daysUntilExpiry < 0) {
+                            status = '❌ Expired';
+                            statusColor = 'var(--danger)';
+                        } else if (daysUntilExpiry < 30) {
+                            status = `⚠️ Expires in ${daysUntilExpiry} days`;
+                            statusColor = 'var(--warning)';
+                        }
+                    }
+                    
+                    html += `
+                        <tr>
+                            <td><strong>${item.name}</strong></td>
+                            <td>${item.category}</td>
+                            <td>${item.quantity}</td>
+                            <td>₹${item.price.toFixed(2)}</td>
+                            <td>${item.expiry ? new Date(item.expiry).toLocaleDateString() : 'N/A'}</td>
+                            <td style="color: ${statusColor}; font-weight: 600;">${status}</td>
+                        </tr>
+                    `;
+                });
+                
+                html += '</tbody></table>';
+                document.getElementById('stockList').innerHTML = html;
+            });
+        }
+
+        function openNewUltrasound() {
+            openModal('newUltrasoundModal');
+            // Set today's date as default
+            document.getElementById('usDate').valueAsDate = new Date();
+        }
+
+        // ULTRASOUND FUNCTIONS
+        let selectedPatientForUS = null;
+
+        function searchPatientForUS() {
+            const uhid = document.getElementById('usPatientUHID').value.toUpperCase();
+            if (uhid.length < 3) {
+                document.getElementById('usPatientInfo').style.display = 'none';
+                selectedPatientForUS = null;
+                return;
+            }
+
+            db.ref('patients').orderByChild('uhid').equalTo(uhid).once('value', snap => {
+                if (snap.exists()) {
+                    snap.forEach(child => {
+                        selectedPatientForUS = child.val();
+                        document.getElementById('usPatientName').textContent = selectedPatientForUS.name;
+                        document.getElementById('usPatientAge').textContent = selectedPatientForUS.age;
+                        document.getElementById('usPatientContact').textContent = selectedPatientForUS.contact;
+                        document.getElementById('usPatientInfo').style.display = 'block';
+                    });
+                } else {
+                    document.getElementById('usPatientInfo').style.display = 'none';
+                    selectedPatientForUS = null;
+                }
+            });
+        }
+
+        async function saveUltrasound(e) {
+            e.preventDefault();
+            
+            if (!selectedPatientForUS) {
+                alert('Please enter a valid patient UHID');
+                return;
+            }
+
+            const ultrasoundData = {
+                uhid: selectedPatientForUS.uhid,
+                patientName: selectedPatientForUS.name,
+                patientAge: selectedPatientForUS.age,
+                patientContact: selectedPatientForUS.contact,
+                type: document.getElementById('usType').value,
+                date: document.getElementById('usDate').value,
+                fee: parseFloat(document.getElementById('usFee').value),
+                commission: parseFloat(document.getElementById('usCommission').value) || 0,
+                findings: document.getElementById('usFindings').value,
+                whatsappSent: document.getElementById('usWhatsappYes').checked,
+                createdAt: firebase.database.ServerValue.TIMESTAMP,
+                createdBy: currentUser.uid
+            };
+
+            try {
+                await db.ref('ultrasounds').push(ultrasoundData);
+                alert('Ultrasound record saved successfully!' + 
+                      (ultrasoundData.whatsappSent ? '\n✅ Marked as sent via WhatsApp' : ''));
+                closeModal('newUltrasoundModal');
+                e.target.reset();
+                selectedPatientForUS = null;
+                document.getElementById('usPatientInfo').style.display = 'none';
+                loadUltrasounds();
+            } catch (err) {
+                alert('Error saving ultrasound record: ' + err.message);
+            }
+        }
+
+        function loadUltrasounds() {
+            const filter = document.getElementById('ultrasoundFilter').value;
+            const search = document.getElementById('ultrasoundSearch').value.toUpperCase();
+
+            db.ref('ultrasounds').once('value', snap => {
+                if (!snap.exists()) {
+                    document.getElementById('ultrasoundList').innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-icon">🔬</div>
+                            <p>No ultrasound records yet</p>
+                        </div>
+                    `;
+                    updateCommissionSummary([]);
+                    return;
+                }
+
+                const records = [];
+                snap.forEach(child => {
+                    records.unshift({ id: child.key, ...child.val() });
+                });
+
+                // Apply date filter
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                const weekAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+                const monthAgo = new Date(today.getFullYear(), today.getMonth(), 1);
+
+                let filtered = records.filter(r => {
+                    const recordDate = new Date(r.date);
+                    recordDate.setHours(0, 0, 0, 0);
+                    
+                    if (filter === 'today') return recordDate.getTime() === today.getTime();
+                    if (filter === 'week') return recordDate >= weekAgo;
+                    if (filter === 'month') return recordDate >= monthAgo;
+                    return true;
+                });
+
+                // Apply search filter
+                if (search.length > 0) {
+                    filtered = filtered.filter(r => 
+                        r.uhid.toUpperCase().includes(search) || 
+                        r.patientName.toUpperCase().includes(search)
+                    );
+                }
+
+                if (filtered.length === 0) {
+                    document.getElementById('ultrasoundList').innerHTML = `
+                        <div class="alert alert-warning">No records found matching your filters</div>
+                    `;
+                    updateCommissionSummary([]);
+                    return;
+                }
+
+                let html = '<table class="table"><thead><tr><th>Date</th><th>Patient</th><th>UHID</th><th>Type</th><th>Fee</th><th>Commission</th><th>WhatsApp</th><th>Actions</th></tr></thead><tbody>';
+                
+                filtered.forEach(record => {
+                    html += `
+                        <tr>
+                            <td><strong>${new Date(record.date).toLocaleDateString()}</strong></td>
+                            <td>${record.patientName}<br><small style="color: var(--text-secondary);">${record.patientAge} yrs</small></td>
+                            <td><span class="uhid-badge">${record.uhid}</span></td>
+                            <td>${record.type}</td>
+                            <td>₹${record.fee.toFixed(2)}</td>
+                            <td style="color: var(--success); font-weight: 600;">₹${record.commission.toFixed(2)}</td>
+                            <td>${record.whatsappSent ? '✅ Sent' : '❌ Not sent'}</td>
+                            <td>
+                                <button class="btn btn-secondary" style="padding: 0.5rem 0.75rem; font-size: 0.875rem;" onclick="viewUSDetails('${record.id}')">
+                                    View
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                });
+                
+                html += '</tbody></table>';
+                document.getElementById('ultrasoundList').innerHTML = html;
+                
+                updateCommissionSummary(records);
+            });
+        }
+
+        function updateCommissionSummary(records) {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const weekAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+            const monthAgo = new Date(today.getFullYear(), today.getMonth(), 1);
+
+            let todayTotal = 0;
+            let weekTotal = 0;
+            let monthTotal = 0;
+
+            records.forEach(r => {
+                const recordDate = new Date(r.date);
+                recordDate.setHours(0, 0, 0, 0);
+                
+                if (recordDate.getTime() === today.getTime()) {
+                    todayTotal += r.commission || 0;
+                }
+                if (recordDate >= weekAgo) {
+                    weekTotal += r.commission || 0;
+                }
+                if (recordDate >= monthAgo) {
+                    monthTotal += r.commission || 0;
+                }
+            });
+
+            document.getElementById('commissionToday').textContent = todayTotal.toFixed(2);
+            document.getElementById('commissionWeek').textContent = weekTotal.toFixed(2);
+            document.getElementById('commissionMonth').textContent = monthTotal.toFixed(2);
+        }
+
+        function viewUSDetails(recordId) {
+            db.ref('ultrasounds/' + recordId).once('value', snap => {
+                const record = snap.val();
+                if (!record) return;
+
+                const details = `
+                    📋 ULTRASOUND RECORD DETAILS
+                    
+                    Patient: ${record.patientName}
+                    UHID: ${record.uhid}
+                    Age: ${record.patientAge} years
+                    Contact: ${record.patientContact}
+                    
+                    Type: ${record.type}
+                    Date: ${new Date(record.date).toLocaleDateString()}
+                    Fee: ₹${record.fee.toFixed(2)}
+                    Commission: ₹${record.commission.toFixed(2)}
+                    
+                    Findings:
+                    ${record.findings || 'No findings recorded'}
+                    
+                    WhatsApp: ${record.whatsappSent ? '✅ Report sent' : '❌ Not sent'}
+                `;
+                
+                alert(details);
+            });
+        }
+
+        function openAddStock() {
+            openModal('addStockModal');
+        }
+
+        // DASHBOARD FUNCTIONS
+        function loadDashboard() {
+            // Load total patients
+            db.ref('patients').once('value', snap => {
+                document.getElementById('statTotalPatients').textContent = snap.numChildren();
+                
+                // Load recent patients for dashboard
+                const patients = [];
+                snap.forEach(child => patients.unshift(child.val()));
+                const recent = patients.slice(0, 5);
+                
+                if (recent.length === 0) {
+                    document.getElementById('dashboardRecentPatients').innerHTML = '<p style="color: var(--text-secondary);">No patients registered yet</p>';
+                } else {
+                    let html = '<table class="table"><thead><tr><th>UHID</th><th>Name</th><th>Age</th><th>Type</th><th>Registered</th></tr></thead><tbody>';
+                    recent.forEach(p => {
+                        const date = p.createdAt ? new Date(p.createdAt).toLocaleDateString() : 'N/A';
+                        html += `
+                            <tr style="cursor: pointer;" onclick="selectExistingPatient('${p.uhid}')">
+                                <td><span class="uhid-badge">${p.uhid}</span></td>
+                                <td><strong>${p.name}</strong></td>
+                                <td>${p.age}</td>
+                                <td><span class="status-badge status-${p.type}">${p.type}</span></td>
+                                <td>${date}</td>
+                            </tr>
+                        `;
+                    });
+                    html += '</tbody></table>';
+                    document.getElementById('dashboardRecentPatients').innerHTML = html;
+                }
+            });
+
+            // Load today's visits
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const todayTimestamp = today.getTime();
+            
+            db.ref('diagnoses').once('value', snap => {
+                let todayCount = 0;
+                let monthCount = 0;
+                const followups = [];
+                
+                const monthStart = new Date(today.getFullYear(), today.getMonth(), 1).getTime();
+                
+                snap.forEach(child => {
+                    const diag = child.val();
+                    const diagDate = new Date(diag.date).getTime();
+                    
+                    if (diagDate >= todayTimestamp) {
+                        todayCount++;
+                    }
+                    if (diagDate >= monthStart) {
+                        monthCount++;
+                    }
+                    
+                    // Check for upcoming follow-ups
+                    if (diag.followup) {
+                        const followupDate = new Date(diag.followup);
+                        if (followupDate >= today && followupDate <= new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000)) {
+                            followups.push({
+                                ...diag,
+                                followupDate: followupDate
+                            });
+                        }
+                    }
+                });
+                
+                document.getElementById('statTodayVisits').textContent = todayCount;
+                document.getElementById('statMonthVisits').textContent = monthCount;
+                
+                // Display follow-ups
+                if (followups.length === 0) {
+                    document.getElementById('dashboardFollowups').innerHTML = '<p style="color: var(--text-secondary);">No upcoming follow-ups in the next 7 days</p>';
+                } else {
+                    followups.sort((a, b) => a.followupDate - b.followupDate);
+                    let html = '<table class="table"><thead><tr><th>Date</th><th>Patient</th><th>UHID</th><th>Last Visit</th></tr></thead><tbody>';
+                    followups.forEach(f => {
+                        html += `
+                            <tr>
+                                <td><strong>${f.followupDate.toLocaleDateString()}</strong></td>
+                                <td>${f.patientName}</td>
+                                <td><span class="uhid-badge">${f.uhid}</span></td>
+                                <td>${new Date(f.date).toLocaleDateString()}</td>
+                            </tr>
+                        `;
+                    });
+                    html += '</tbody></table>';
+                    document.getElementById('dashboardFollowups').innerHTML = html;
+                }
+            });
+
+            // Load stock alerts
+            db.ref('stock').once('value', snap => {
+                let alertCount = 0;
+                const today = new Date();
+                
+                snap.forEach(child => {
+                    const item = child.val();
+                    
+                    // Low stock
+                    if (item.quantity <= (item.lowStockAlert || 10)) {
+                        alertCount++;
+                    }
+                    
+                    // Expiring soon or expired
+                    if (item.expiry) {
+                        const expiryDate = new Date(item.expiry);
+                        const daysUntilExpiry = Math.ceil((expiryDate - today) / (1000 * 60 * 60 * 24));
+                        if (daysUntilExpiry <= 30) {
+                            alertCount++;
+                        }
+                    }
+                });
+                
+                document.getElementById('statStockAlerts').textContent = alertCount;
+            });
+        }
+    </script>
+</body>
+</html>
