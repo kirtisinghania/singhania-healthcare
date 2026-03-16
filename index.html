@@ -978,9 +978,26 @@
         }
 
         function logout() {
-            auth.signOut();
+            if (currentUser) {
+                auth.signOut();
+            }
+            
+            currentUser = null;
+            
+            // Close all modals
+            document.querySelectorAll('.modal').forEach(m => m.classList.remove('active'));
+            
+            // Hide all apps
             document.getElementById('staffApp').classList.remove('active');
+            document.getElementById('staffApp').style.display = 'none';
+            document.getElementById('patientApp').classList.remove('active');
+            document.getElementById('patientApp').style.display = 'none';
+            
+            // Show auth screen
             document.getElementById('authScreen').style.display = 'flex';
+            
+            // Reset form
+            document.getElementById('loginForm').reset();
         }
 
         // Navigation
@@ -1773,6 +1790,23 @@
                 document.getElementById('statStockAlerts').textContent = alertCount;
             });
         }
+
+        // ESC key to close modals
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.modal').forEach(m => m.classList.remove('active'));
+            }
+        });
+
+        // Emergency reset function (for debugging)
+        // If stuck, press F12, type: resetApp() and press Enter
+        window.resetApp = function() {
+            document.querySelectorAll('.modal').forEach(m => m.classList.remove('active'));
+            document.getElementById('staffApp').style.display = 'none';
+            document.getElementById('patientApp').style.display = 'none';
+            document.getElementById('authScreen').style.display = 'flex';
+            alert('✅ App reset! You can now login again.');
+        };
     </script>
 </body>
 </html>
