@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Services - Singhania Healthcare</title>
+    
+    <link rel="icon" type="image/png" href="singhania-logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            line-height: 1.6;
+            color: #1e293b;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+            color: white;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: 800;
+        }
+        
+        .logo-icon {
+            width: 45px;
+            height: 45px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            color: #059669;
+            font-size: 1.2rem;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            align-items: center;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            transition: opacity 0.3s;
+        }
+        
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+        
+        .sign-in-btn {
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+            color: white;
+            padding: 0.7rem 1.8rem;
+            border-radius: 10px;
+            font-weight: 800;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(249, 115, 22, 0.3);
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+        
+        .sign-in-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 25px rgba(249, 115, 22, 0.5);
+            background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%);
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: white;
+            color: #059669;
+            border: none;
+            font-size: 1.8rem;
+            padding: 0.5rem;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+        
+        .page-header {
+            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+            color: white;
+            padding: 120px 2rem 60px;
+            margin-top: 73px;
+            text-align: center;
+        }
+        
+        .page-header h1 {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+        }
+        
+        .content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 80px 2rem;
+        }
+        
+        .category {
+            margin-bottom: 4rem;
+        }
+        
+        .category h2 {
+            color: #059669;
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 3px solid #10b981;
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .service-card {
+            background: #f0fdf4;
+            padding: 2rem;
+            border-radius: 16px;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-5px);
+            border-color: #059669;
+            box-shadow: 0 8px 24px rgba(5,150,105,0.2);
+        }
+        
+        .service-card .emoji {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .service-card h3 {
+            color: #059669;
+            font-size: 1.4rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .service-card p {
+            color: #64748b;
+            line-height: 1.8;
+        }
+        
+        .procedures {
+            background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
+            padding: 4rem 2rem;
+            margin-top: 4rem;
+        }
+        
+        .procedures h2 {
+            text-align: center;
+            color: #059669;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+        }
+        
+        .procedures-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+        }
+        
+        .procedure-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        
+        .procedure-card .icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .procedure-card h4 {
+            color: #059669;
+            font-size: 1.1rem;
+        }
+        
+        footer {
+            background: #065f46;
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        @media (max-width: 768px) {
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .procedures-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .nav-links {
+                display: none;
+                position: fixed;
+                top: 73px;
+                left: 0;
+                right: 0;
+                background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+                flex-direction: column;
+                gap: 0;
+                padding: 1rem 0;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .nav-links li {
+                width: 100%;
+                text-align: center;
+                padding: 1rem 0;
+                border-bottom: 1px solid rgba(255,255,255,0.1);
+            }
+            
+            .nav-links li:last-child {
+                border-bottom: none;
+            }
+            
+            .sign-in-btn {
+                display: inline-block;
+                margin: 1rem auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <div class="logo-icon">SH</div>
+                <span>Singhania Healthcare</span>
+            </div>
+            <button class="mobile-menu-btn" onclick="toggleMenu()">☰</button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="system/index.html" class="sign-in-btn">🔐 Staff Sign In</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="page-header">
+        <h1>Our Services</h1>
+        <p>Comprehensive Women's Healthcare Solutions</p>
+    </section>
+
+    <div class="content">
+        <div class="category">
+            <h2>🤰 Pregnancy & Maternity Care</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="emoji">🤱</div>
+                    <h3>Antenatal Care</h3>
+                    <p>Comprehensive prenatal care including regular checkups, monitoring, nutritional guidance, and preparation for childbirth. We support you throughout your pregnancy journey.</p>
+                </div>
+                <div class="service-card">
+                    <div class="emoji">⚕️</div>
+                    <h3>High Risk Pregnancy</h3>
+                    <p>Specialized care for pregnancies requiring extra monitoring due to maternal age, medical conditions, or pregnancy complications. Expert management for optimal outcomes.</p>
+                </div>
+                <div class="service-card">
+                    <div class="emoji">💔</div>
+                    <h3>Recurrent Pregnancy Loss</h3>
+                    <p>Compassionate care and investigation for women experiencing repeated miscarriages. Comprehensive evaluation and treatment planning.</p>
+                </div>
+                <div class="service-card">
+                    <div class="emoji">🩺</div>
+                    <h3>Pregnancy Related Problems</h3>
+                    <p>Management of complications such as gestational diabetes, preeclampsia, placental issues, and other pregnancy-related concerns.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="category">
+            <h2>🔬 Diagnostic Services</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="emoji">📡</div>
+                    <h3>Ultrasound</h3>
+                    <p>Advanced ultrasound imaging for pregnancy monitoring, gynecological assessment, and diagnostic purposes using state-of-the-art equipment.</p>
+                </div>
+                <div class="service-card">
+                    <div class="emoji">💓</div>
+                    <h3>NST (Non-Stress Test)</h3>
+                    <p>Fetal monitoring to assess baby's heart rate and well-being during pregnancy, especially in high-risk cases.</p>
+                </div>
+                <div class="service-card">
+                    <div class="emoji">🔬</div>
+                    <h3>Pap Smear</h3>
+                    <p>Cervical cancer screening test for early detection and prevention of cervical abnormalities.</p>
+                </div>
+                <div class="service-card">
+                    <div class="emoji">🧬</div>
+                    <h3>Cervical Biopsy</h3>
+                    <p>Diagnostic procedure to examine cervical tissue for abnormal cells or conditions.</p>
+                </div>
+                <div class="service-card">
+                    <div class="emoji">🩺</div>
+                    <h3>Endometrial Biopsy</h3>
+                    <p>Tissue sampling from the uterine lining to diagnose abnormal bleeding or other concerns.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="category">
+            <h2>🌸 Women's Health Services</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="emoji">👶</div>
+                    <h3>Infertility Treatment</h3>
+                    <p>Comprehensive evaluation and treatment for couples facing difficulty conceiving. Guidance on fertility enhancement and assisted reproduction options.</p>
+                </div>
+                <div class="service-card">
+                    <div class="emoji">💊</div>
+                    <h3>Menstrual Disturbances</h3>
+                    <p>Treatment for irregular periods, heavy bleeding, painful periods, and other menstrual disorders.</p>
+                </div>
+                <div class="service-card">
+                    <div class="emoji">💧</div>
+                    <h3>White Discharge</h3>
+                    <p>Diagnosis and treatment of abnormal vaginal discharge and related infections.</p>
+                </div>
+                <div class="service-card">
+                    <div class="emoji">🎈</div>
+                    <h3>Fibroids & Cysts</h3>
+                    <p>Management of uterine fibroids and ovarian cysts through medical and surgical approaches.</p>
+                </div>
+                <div class="service-card">
+                    <div class="emoji">🚺</div>
+                    <h3>Menopause</h3>
+                    <p>Comprehensive care for menopausal symptoms including hormonal changes, hot flashes, and related health concerns.</p>
+                </div>
+                <div class="service-card">
+                    <div class="emoji">💦</div>
+                    <h3>Urinary Complaints</h3>
+                    <p>Treatment for urinary incontinence, frequent urination, and other urological concerns in women.</p>
+                </div>
+                <div class="service-card">
+                    <div class="emoji">❌</div>
+                    <h3>Miscarriage Management</h3>
+                    <p>Compassionate care and medical management for pregnancy loss.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="category">
+            <h2>🎗️ Cancer Screening & Prevention</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="emoji">🩺</div>
+                    <h3>Cervical Cancer Screening</h3>
+                    <p>Regular screening and early detection programs for cervical cancer prevention.</p>
+                </div>
+                <div class="service-card">
+                    <div class="emoji">🎀</div>
+                    <h3>Breast Lumps & Cancer Evaluation</h3>
+                    <p>Clinical examination, guidance on breast self-examination, and referral for further investigation when needed.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="procedures">
+        <h2>Specialized Procedures</h2>
+        <div class="procedures-grid">
+            <div class="procedure-card">
+                <div class="icon">📡</div>
+                <h4>NST</h4>
+            </div>
+            <div class="procedure-card">
+                <div class="icon">🔬</div>
+                <h4>Ultrasound</h4>
+            </div>
+            <div class="procedure-card">
+                <div class="icon">🧬</div>
+                <h4>Pap Smear</h4>
+            </div>
+            <div class="procedure-card">
+                <div class="icon">🩺</div>
+                <h4>Cervical Biopsy</h4>
+            </div>
+            <div class="procedure-card">
+                <div class="icon">🔬</div>
+                <h4>Endometrial Biopsy</h4>
+            </div>
+            <div class="procedure-card">
+                <div class="icon">💊</div>
+                <h4>Medical Management</h4>
+            </div>
+            <div class="procedure-card">
+                <div class="icon">🩹</div>
+                <h4>Minor Procedures</h4>
+            </div>
+            <div class="procedure-card">
+                <div class="icon">🎯</div>
+                <h4>Preventive Care</h4>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Singhania Healthcare. All rights reserved.</p>
+        <p style="margin-top: 0.5rem; font-size: 0.9rem;">Expert Women's Health Care in Khurja</p>
+    </footer>
+    
+    <script>
+        function toggleMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.toggle('active');
+        }
+        
+        // Close menu when clicking a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('navLinks').classList.remove('active');
+            });
+        });
+    </script>
+</body>
+</html>
