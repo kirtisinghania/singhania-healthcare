@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Singhania Healthcare - Expert Women's Health Care | Dr. Pooja Agarwal Singhania</title>
+    
+    <meta name="description" content="Singhania Healthcare - Expert obstetrics and gynecology care in Khurja. Led by Dr. Pooja Agarwal Singhania, M.S. (OBG), offering antenatal care, high-risk pregnancy management, ultrasound, and comprehensive women's health services.">
+    
+    <link rel="icon" type="image/png" href="singhania-logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            line-height: 1.6;
+            color: #1e293b;
+            overflow-x: hidden;
+        }
+        
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+            color: white;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: 800;
+        }
+        
+        .logo-icon {
+            width: 45px;
+            height: 45px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            color: #059669;
+            font-size: 1.2rem;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            align-items: center;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            transition: opacity 0.3s;
+        }
+        
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+        
+        .sign-in-btn {
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+            color: white;
+            padding: 0.7rem 1.8rem;
+            border-radius: 10px;
+            font-weight: 800;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(249, 115, 22, 0.3);
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+        
+        .sign-in-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 25px rgba(249, 115, 22, 0.5);
+            background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%);
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: white;
+            color: #059669;
+            border: none;
+            font-size: 1.8rem;
+            padding: 0.5rem;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+        
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .nav-links {
+                display: none;
+                position: fixed;
+                top: 73px;
+                left: 0;
+                right: 0;
+                background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+                flex-direction: column;
+                gap: 0;
+                padding: 1rem 0;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .nav-links li {
+                width: 100%;
+                text-align: center;
+                padding: 1rem 0;
+                border-bottom: 1px solid rgba(255,255,255,0.1);
+            }
+            
+            .nav-links li:last-child {
+                border-bottom: none;
+            }
+            
+            .sign-in-btn {
+                display: inline-block;
+                margin: 1rem auto;
+            }
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #059669 0%, #10b981 50%, #34d399 100%);
+            color: white;
+            padding: 120px 2rem 80px;
+            margin-top: 73px;
+        }
+        
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+        
+        .hero-text h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+        }
+        
+        .hero-text .tagline {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+            font-weight: 500;
+        }
+        
+        .hero-text .doctor-name {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .hero-text .credentials {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-block;
+        }
+        
+        .btn-primary {
+            background: white;
+            color: #059669;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+        }
+        
+        .btn-secondary {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid white;
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        .hero-image {
+            background: white;
+            border-radius: 20px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        
+        .hero-image img {
+            width: 100%;
+            border-radius: 12px;
+        }
+        
+        /* Quick Info Bar */
+        .quick-info {
+            background: #f0fdf4;
+            padding: 2rem;
+            margin-top: -30px;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .quick-info-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+        
+        .info-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+        
+        .info-card .icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .info-card h3 {
+            color: #059669;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .info-card p {
+            color: #64748b;
+        }
+        
+        /* Services Section */
+        .services {
+            padding: 80px 2rem;
+            background: white;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: #059669;
+            margin-bottom: 1rem;
+        }
+        
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #64748b;
+            margin-bottom: 4rem;
+        }
+        
+        .services-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+        
+        .service-card {
+            background: #f0fdf4;
+            padding: 2rem;
+            border-radius: 16px;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-5px);
+            border-color: #059669;
+            box-shadow: 0 8px 24px rgba(5,150,105,0.2);
+        }
+        
+        .service-card .emoji {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .service-card h3 {
+            color: #059669;
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .service-card p {
+            color: #64748b;
+        }
+        
+        /* Contact Section */
+        .contact {
+            background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
+            padding: 80px 2rem;
+        }
+        
+        .contact-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+        
+        .contact-info h3 {
+            color: #059669;
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+        }
+        
+        .info-item {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            align-items: flex-start;
+        }
+        
+        .info-item .icon {
+            font-size: 1.5rem;
+            color: #059669;
+            min-width: 30px;
+        }
+        
+        .info-item div h4 {
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+            color: #1e293b;
+        }
+        
+        .info-item div p {
+            color: #64748b;
+        }
+        
+        .whatsapp-btn {
+            background: #25D366;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .whatsapp-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(37,211,102,0.4);
+        }
+        
+        /* Footer */
+        footer {
+            background: #065f46;
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        footer p {
+            opacity: 0.9;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .hero-text h1 {
+                font-size: 2.5rem;
+            }
+            
+            .quick-info-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .contact-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="logo">
+                <div class="logo-icon">SH</div>
+                <span>Singhania Healthcare</span>
+            </div>
+            <button class="mobile-menu-btn" onclick="toggleMenu()">☰</button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="system/index.html" class="sign-in-btn">🔐 Staff Sign In</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>Expert Women's Health Care</h1>
+                <p class="tagline">Compassionate Care, Advanced Medicine</p>
+                <p class="doctor-name">Dr. Pooja Agarwal Singhania</p>
+                <p class="credentials">M.B.B.S., M.S. (OBG)<br>Certificate OBG Imaging (RCR, London)<br>Obstetrician & Gynaecologist</p>
+                <div class="cta-buttons">
+                    <a href="contact.html" class="btn btn-primary">Book Appointment</a>
+                    <a href="about.html" class="btn btn-secondary">Learn More</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="doctor-photo.jpg" alt="Dr. Pooja Agarwal Singhania at Singhania Healthcare">
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Info -->
+    <section class="quick-info">
+        <div class="quick-info-content">
+            <div class="info-card">
+                <div class="icon">📅</div>
+                <h3>Timings</h3>
+                <p>Mon-Sat: 10AM-1PM, 5PM-7PM<br><small>(Tuesday Closed)</small></p>
+            </div>
+            <div class="info-card">
+                <div class="icon">🎉</div>
+                <h3>FREE Consultation</h3>
+                <p>Every Thursday</p>
+            </div>
+            <div class="info-card">
+                <div class="icon">📞</div>
+                <h3>Call Us</h3>
+                <p><strong>9286162717</strong></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services -->
+    <section class="services">
+        <h2 class="section-title">Our Services</h2>
+        <p class="section-subtitle">Comprehensive women's healthcare tailored to your needs</p>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="emoji">🤰</div>
+                <h3>Antenatal Care</h3>
+                <p>Complete pregnancy care and monitoring</p>
+            </div>
+            <div class="service-card">
+                <div class="emoji">⚕️</div>
+                <h3>High Risk Pregnancy</h3>
+                <p>Specialized care for complex pregnancies</p>
+            </div>
+            <div class="service-card">
+                <div class="emoji">🔬</div>
+                <h3>Ultrasound & NST</h3>
+                <p>Advanced imaging and fetal monitoring</p>
+            </div>
+            <div class="service-card">
+                <div class="emoji">👶</div>
+                <h3>Infertility Treatment</h3>
+                <p>Expert guidance for conception</p>
+            </div>
+            <div class="service-card">
+                <div class="emoji">💊</div>
+                <h3>Menstrual Issues</h3>
+                <p>Management of menstrual disturbances</p>
+            </div>
+            <div class="service-card">
+                <div class="emoji">🏥</div>
+                <h3>Gynecological Care</h3>
+                <p>Comprehensive women's health services</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact CTA -->
+    <section class="contact">
+        <div class="contact-content">
+            <div class="contact-info">
+                <h3>Visit Us</h3>
+                <div class="info-item">
+                    <div class="icon">📍</div>
+                    <div>
+                        <h4>Address</h4>
+                        <p>Navpurga Shakti Mandir Road<br>Near Jyoti Bal Phule Gate<br>Khurja - 203131</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <div class="icon">⏰</div>
+                    <div>
+                        <h4>Timings</h4>
+                        <p>Mon to Sat: 10:00 AM - 1:00 PM<br>5:00 PM - 7:00 PM<br><strong>Tuesday: Closed</strong></p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <div class="icon">📞</div>
+                    <div>
+                        <h4>Contact</h4>
+                        <p>9286162717</p>
+                    </div>
+                </div>
+                <a href="https://wa.me/919286162717" class="whatsapp-btn" target="_blank">
+                    💬 WhatsApp Us
+                </a>
+            </div>
+            <div style="background: white; padding: 2rem; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.1);">
+                <h3 style="color: #059669; margin-bottom: 1.5rem;">Why Choose Us?</h3>
+                <ul style="list-style: none; color: #64748b; line-height: 2;">
+                    <li>✅ Expert care by qualified specialist</li>
+                    <li>✅ Advanced imaging facilities</li>
+                    <li>✅ Personalized treatment plans</li>
+                    <li>✅ Free consultation every Thursday</li>
+                    <li>✅ Convenient location in Khurja</li>
+                    <li>✅ Compassionate, patient-centered care</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Singhania Healthcare. All rights reserved.</p>
+        <p style="margin-top: 0.5rem; font-size: 0.9rem;">Expert Women's Health Care in Khurja</p>
+    </footer>
+    
+    <script>
+        function toggleMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.toggle('active');
+        }
+        
+        // Close menu when clicking a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('navLinks').classList.remove('active');
+            });
+        });
+    </script>
+</body>
+</html>
